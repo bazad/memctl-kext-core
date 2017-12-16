@@ -10,9 +10,27 @@
 #include "memctl/memctl_error.h"
 
 #include <IOKit/IOKitLib.h>
+#include <stdio.h>
 
 static const char *service_name = "KernelTask";
 static const uint32_t selector  = 0x6d656d63;
+
+static size_t format_core_error(char *buffer, size_t size, error_handle error) {
+	int len = snprintf(buffer, size, "%s", (const char *) error->data);
+	return (len > 0 ? len : 0);
+}
+
+struct error_type core_error = {
+	.static_description = "core error",
+	.format_description = format_core_error,
+};
+
+static void error_core(const char *fmt, ...) {
+	va_list ap;
+	va_start(ap, fmt);
+	error_push_printf(&core_error, fmt, ap);
+	va_end(ap);
+}
 
 bool core_load() {
 	io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault,
