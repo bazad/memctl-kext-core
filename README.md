@@ -30,7 +30,7 @@ To build and load the kernel extension:
 
 	$ cd memctl-kext-core/kext
 	$ xcodebuild
-	$ sudo cp -R kext/build/Release/KernelTask.kext /tmp/
+	$ sudo cp -R ./build/Release/KernelTask.kext /tmp/
 	$ sudo kextload /tmp/KernelTask.kext
 	$ cd ../..
 
